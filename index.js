@@ -13,6 +13,11 @@ app.set('view engine', 'ejs');
 app.get('/', function(request, response) {
   response.render('pages/homepage');
 });
+
+app.get('/form', function(request, response) {
+  response.render('pages/form');
+});
+
 app.get('/cool', function(request, response) {
   response.send(cool());
 });

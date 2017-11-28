@@ -68,9 +68,109 @@
         onclick="showdate()"> Click me to display Date and Time.</button>
         <div id="myDIV" style="display: none">
           This is my DIV element.
-          <p id="demo">Jakapong Klainongsuang</p>
+          <p>Jakapong Klainongsuang</p>
         </div>
+        <!--
+        <form name="myForm" action="/action_page.php"
+          onsubmit="return validateForm()" method="post">
+          Name: <input type="text" name="fname">
+          <input type="submit" value="Submit">
+        </form>
+        <form>
+          <select id="mySelect" onchange="myFunction()">
+            <option>Apple</option>
+            <option>Orange</option>
+            <option>Pineapple</option>
+            <option>Banana</option>
+          </select>
+        </form>
 
+        </br>
+        <p id="demo"></p>
+
+
+        <select id="test-dropdown" onchange="choice1(this)">
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+        !-->
+        <form name="calform">
+          <table id="ipv4table" cellpadding="3" class="panel" >
+            <tr>
+	             <td>Network Class</td>
+	              <!--<td><label><input type="radio" value="any" checked onclick="popSubnet('a');" />Any</label> &nbsp; <label for="cclass1"><input type="radio" value="a"  onclick="popSubnet('a');" />A</label> &nbsp; <label for="cclass2"><input type="radio"  value="b" onclick="popSubnet('b');" />B</label> &nbsp; <label for="cclass3"><input type="radio"  value="c"  onclick="popSubnet('c');" />C</label></td>
+                !-->
+
+                <input type="radio" name="radio" id="radio1" value="radio1" checked onclick="popSubnet('any');" />
+                <label for="radio1" >Any</label>
+                <input type="radio" name="radio" id="radio2" value="radio2"  onclick="popSubnet('a');"/>
+                <label for="radio2" >A</label>
+                <input type="radio" name="radio" id="radio3" value="radio3"  onclick="popSubnet('b');"/>
+                <label for="radio3" >B</label>
+                <input type="radio" name="radio" id="radio4" value="radio4"  onclick="popSubnet('c');"/>
+                <label for="radio4" >C</label>
+
+
+
+
+              </tr>
+              <tr>
+	               <td>Subnet</td>
+	                <td><select id="subnet">
+                    <option selected="" selected="selected" disabled="true">Please Select</option>
+                    <option>255.255.255.255/32</option>
+                    <option>255.255.255.254/31</option>
+                    <option>255.255.255.252/30</option>
+                    <option>255.255.255.248/29</option>
+                    <option>255.255.255.240/28</option>
+                    <option>255.255.255.224/27</option>
+                    <option>255.255.255.192/26</option>
+                    <option>255.255.255.128/25</option>
+                    <option>255.255.255.0/24</option>
+                    <div id = "16-23">
+                      <option class="c">255.255.254.0/23</option>
+                      <option class="c">255.255.252.0/22</option>
+                      <option class="c">255.255.248.0/21</option>
+                      <option class="c">255.255.240.0/20</option>
+                      <option class="c">255.255.224.0/19</option>
+                      <option class="c">255.255.192.0/18</option>
+                      <option class="c">255.255.128.0/17</option>
+                      <option class="c">255.255.0.0/16</option>
+                    </div>
+                    <div id = "8-15">
+                      <option class="b">255.254.0.0/15</option>
+                      <option class="b">255.252.0.0/14</option>
+                      <option class="b">255.248.0.0/13</option>
+                      <option class="b">255.240.0.0/12</option>
+                      <option class="b">255.224.0.0/11</option>
+                      <option class="b">255.192.0.0/10</option>
+                      <option class="b">255.128.0.0/9</option>
+                      <option class="b">255.0.0.0/8</option>
+                    </div>
+                    <div id = '1-7'>
+                      <option class="a">254.0.0.0/7</option>
+                      <option class="a">252.0.0.0/6</option>
+                      <option class="a">248.0.0.0/5</option>
+                      <option class="a">240.0.0.0/4</option>
+                      <option class="a">224.0.0.0/3</option>
+                      <option class="a">192.0.0.0/2</option>
+                      <option class="a">128.0.0.0/1</option>
+                    </div>
+                  </select>
+
+                </td>
+                 </tr>
+                 <tr>
+	                  <td>IP Address</td>
+	                   <td><input type="text" name="cip" id="cip" value="158.108.235.170" class="inlonger"></td>
+                   </tr>
+                   <tr>
+	                    <td>&nbsp;</td>
+	                     <td><input type="hidden" name="ctype" id="ctype" value="ipv4"><input name="printit" value="0" type="hidden"><input type="image" src="//d26tpo4cm8sb6k.cloudfront.net/img/svg/calculate.svg" value="Calculate" alt="Calculate"></td>
+                     </tr>
+                    </table>
+            </form>
         </div>
 
 
@@ -79,6 +179,35 @@
 
 
 <script type="text/javascript">
+  function popSubnet(type) {
+    var eight_15 = document.getElementById("8-15");
+    var one_7 = document.getElementById('1-7');
+    var sixteen_23 = document.getElementById('16-23');
+    if (type === "a") {
+      $('.a').hide();
+      $('.b').show();
+      $('.c').show();
+    }
+    if (type === "b") {
+      $('.a').hide();
+      $('.b').hide();
+      $('.c').show();
+    }
+    if (type === "c") {
+      $('.a').hide();
+      $('.b').hide();
+      $('.c').hide();
+    }
+    if (type === "any") {
+      $('.a').show();
+      $('.b').show();
+      $('.c').show();
+      eight_15.style.display = "block";
+      sixteen_23.style.display = "block";
+      one_7.style.display = "block";
+    }
+
+  }
   function sayHello() {
     document.write("Hello World");
   }
@@ -89,5 +218,20 @@
     } else {
       x.style.display = "none";
     }
+  }
+  function validateForm() {
+    var x = document.forms["myForm"]["fname"].value;
+    if (x == "") {
+        alert("Name must be filled out");
+        return false;
+    }
+  }
+  function myFunction() {
+    var x = document.getElementById("mySelect");
+    var i = x.selectedIndex;
+    document.getElementById("demo").innerHTML = x.options[i].text;
+  }
+  function choice1(select) {
+     alert(select.options[select.selectedIndex].text);
   }
 </script>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+<h1> Welcome To Form</h1>
+<form method="post" action="#">
+    <input type="text" name="a" value="Enter 'a'" />
+    <input type="text" name="b" value="Enter 'b'" />
+    <input type="text" name="c" value="Enter 'c'" />
+    <input type="submit" name='calc' value="Calculate" />
+</form>
+
+<input type="radio" name="radio" id="radio1" value="radio1" />
+<label for="radio1" checked onclick="popSubnet('any');">Any</label>
+<input type="radio" name="radio" id="radio2" value="radio2" checked onclick="popSubnet('a');"/>
+<label for="radio2" >A</label>
+<input type="radio" name="radio" id="radio3" value="radio3" />
+<label for="radio3" checked onclick="popSubnet('b');">B</label>
+<input type="radio" name="radio" id="radio4" value="radio4" />
+<label for="radio4" checked onclick="popSubnet('c');">C</label>
+<script type = "text/javascript">
+var select = document.getElementById("selectNumber");
+var options = ["1", "2", "3", "4", "5"];
+
+for(var i = 0; i < options.length; i++) {
+    var opt = options[i];
+    var el = document.createElement("option");
+    el.textContent = opt;
+    el.value = opt;
+    select.appendChild(el);
+}​
+document.write(option);
+</script>
+</body>
+</html>
+
+
+<script type="text/javascript">
+  function popSubnet(type) {
+    var eight_15 = document.getElementById("8-15");
+    var one_7 = document.getElementById('1-7');
+    var sixteen_23 = document.getElementById('16-23');
+    if (type === "a") {
+      document.write("Hello World");
+      eight_15.style.display = "block";
+      sixteen_23.style.display = "block";
+      one_7.style.display = "none";
+    }
+    if (type === "b") {
+      eight_15.style.display = "none";
+      sixteen_23.style.display = "block";
+      one_7.style.display = "none";
+    }
+    if (type === "c") {
+      eight_15.style.display = "none";
+      sixteen_23.style.display = "none";
+      one_7.style.display = "none";
+    }
+    if (type === "any") {
+      eight_15.style.display = "block";
+      sixteen_23.style.display = "block";
+      one_7.style.display = "block";
+    }
+
+  }
+  function sayHello() {
+    document.write("Hello World");
+  }
+  function showdate() {
+    var x = document.getElementById('myDIV');
+    if (x.style.display === "none") {
+      x.style.display = "block";
+      eight_15.style.display = "none";
+      sixteen_23.style.display = "none";
+      one_7.style.display = "none";
+    } else {
+      x.style.display = "none";
+    }
+  }
+  function validateForm() {
+    var x = document.forms["myForm"]["fname"].value;
+    if (x == "") {
+        alert("Name must be filled out");
+        return false;
+    }
+  }
+  function myFunction() {
+    var x = document.getElementById("mySelect");
+    var i = x.selectedIndex;
+    document.getElementById("demo").innerHTML = x.options[i].text;
+  }
+  function choice1(select) {
+     alert(select.options[select.selectedIndex].text);
+  }
+</script>
