@@ -1,0 +1,2 @@
+https://stackoverflow.com/questions/29018498/how-to-deploy-a-website-on-heroku
+set HOME=%USERPROFILE%

@@ -139,7 +139,7 @@
                    </tr>
                    <tr>
 	                    <td>&nbsp;</td>
-                     <td> <input type="submit" name="submit" value="submit" onclick="show_result()"></td>
+                     <td> <input type="submit" name="submit" value="submit" onclick="check_result()"></td>
 
                     <!--
                     <td><button type="button" onclick="formAction()">submit</button> </td>
@@ -158,13 +158,97 @@
 
 
 <script type="text/javascript">
+  function check_result() {
+    var ip = document.getElementById("cip").value;
+    if (ip.length === 0) {
+      alert("please insert valid ip")
+    }
+    else {
+      show_result()
+    }
+  }
   function show_result() {
     var subnet = document.getElementById("subnet").value;
     var ip = document.getElementById("cip").value;
-
-    document.getElementById("show_result").innerHTML = "subnet : "+subnet+ "</br>"  + "ip : "+ip;
+    var subnet_pure = subnet.substring(0, subnet.indexOf('/'));
+    var networl_address = cal_network_address(subnet_pure,ip)
+    var binary_subnet_mask = cal_binary_subnet_mask(subnet_pure);
+    var host = cal_nb_host(subnet_pure);
+    var usable_host = cal_usable_host(host);
+    document.getElementById("show_result").innerHTML = "subnet : "+subnet
+                                                        +"</br>"  + "IP Address : "+ip
+                                                        +"</br>" + "Network Address : " + networl_address
+                                                        +"</br>" + "Subnet Mask:" + subnet_pure
+                                                        +"</br>" + "Binary Subnet Mask:	 " + binary_subnet_mask
+                                                        +"</br>" + "Total Number of Hosts: " + host
+                                                        +"</br>" + "Number of Usable Hosts: " + usable_host;
     //alert("I am an alert box!"+ a);
   }
+  function cal_usable_host(host){
+    if (host === 1) {
+      return 0;
+    }
+    return (host-2)
+  }
+  function cal_nb_host(subnet_pure){
+    var arr = new Array();
+    arr = subnet_pure.split(".");
+    var subnet_3 = int_to_binary(parseInt(arr[2]));
+    var subnet_4 = int_to_binary(parseInt(arr[3]));
+    var count = (subnet_3.match(/0/g) || []).length;
+    var count2 = (subnet_4.match(/0/g) || []).length;
+    var count = count + count2;
+    var result = Math.pow(2, count);
+
+    return result
+
+  }
+  function cal_binary_subnet_mask(subnet_pure){
+    var arr = new Array();
+    arr = subnet_pure.split(".");
+    var subnet_1 = int_to_binary(parseInt(arr[0]));
+    var subnet_2 = int_to_binary(parseInt(arr[1]));
+    var subnet_3 = int_to_binary(parseInt(arr[2]));
+    var subnet_4 = int_to_binary(parseInt(arr[3]));
+    var result =  subnet_1+"."+ subnet_2+"."+ subnet_3+"."+ subnet_4;
+    return result;
+
+  }
+  function cal_network_address(subnet_pure, ip) {
+    var arr = new Array();
+    arr = subnet_pure.split(".");
+    var arr_ip = new Array();
+    arr_ip = ip.split(".");
+    //alert(arr.length);
+    var subnet_1 = int_to_binary(parseInt(arr[0]));
+    var subnet_2 = int_to_binary(parseInt(arr[1]));
+    var subnet_3 = int_to_binary(parseInt(arr[2]));
+    var subnet_4 = int_to_binary(parseInt(arr[3]));
+    var ip_1 = int_to_binary(parseInt(arr_ip[0]));
+    var ip_2 = int_to_binary(parseInt(arr_ip[1]));
+    var ip_3 = int_to_binary(parseInt(arr_ip[2]));
+    var ip_4 = int_to_binary(parseInt(arr_ip[3]));
+    //var test = (parseInt('11001010', 2) & parseInt('1111', 2)).toString(2)
+    var networl_address_1 = (parseInt(subnet_1, 2) & parseInt(ip_1, 2))
+    var networl_address_2 = (parseInt(subnet_2, 2) & parseInt(ip_2, 2))
+    var networl_address_3 = (parseInt(subnet_3, 2) & parseInt(ip_3, 2))
+    var networl_address_4 = (parseInt(subnet_4, 2) & parseInt(ip_4, 2))
+    //alert(subnet_1 + " " + subnet_2 + " " + subnet_3 + " " + subnet_4 + "</br>" + ip_1 + " " + ip_2 + " " + ip_3 + " " + ip_4 + "sss"+test);
+    //document.getElementById("show_result").innerHTML = "ip address : " + networl_address_1+ "." + networl_address_2+ "." + networl_address_3+ "." + networl_address_4;
+    //alert("ip address : " + networl_address_1+ "." + networl_address_2+ "." + networl_address_3+ "." + networl_address_4);
+    var result = networl_address_1+ "." + networl_address_2+ "." + networl_address_3+ "." + networl_address_4;
+    return result;
+
+    //alert("I am an alert box!"+ fields);
+  }
+  function int_to_binary(number) {
+    var result = number.toString(2);
+    while (Math.floor(result.length %8) != 0) {
+      result = "0" + result;
+    }
+    return result;
+  }
+
   function popSubnet(type) {
     var eight_15 = document.getElementById("8-15");
     var one_7 = document.getElementById('1-7');
