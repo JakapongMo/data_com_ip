@@ -7,39 +7,33 @@
 <body>
   <input type="button" onclick="sayHello()" value="Say Hello" />
   <div class = "container">
-   <h1>Hello, world!</h1>
+      <h1>Hello, world!</h1>
+      <div class = "row">
+          <div class = "col-md-3" style = "background-color: #dedef8;
+            box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+            <h4>First Column</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+          </div>
 
-   <div class = "row">
+          <div class = "col-md-9" style = "background-color: #dedef8;
+            box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
 
-      <div class = "col-md-3" style = "background-color: #dedef8;
-         box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-
-         <h4>First Column</h4>
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-      </div>
-
-      <div class = "col-md-9" style = "background-color: #dedef8;
-         box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-
-         <h4>Second Column- Split into 4 boxes</h4>
-         <div class = "row">
-
-            <div class = "col-md-6" style = "background-color: #B18904;
-               box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-
-               <p>Consectetur art party Tonx culpa semiotics.
+            <h4>Second Column- Split into 4 boxes</h4>
+          <div class = "row">
+                <div class = "col-md-6" style = "background-color: #B18904;
+                  box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                  <p>Consectetur art party Tonx culpa semiotics.
                   Pinterest assumenda minim organic quis.</p>
-            </div>
+                </div>
 
-            <div class = "col-md-6" style = "background-color: #B18904;
-               box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-
-               <p>sed do eiusmod tempor incididunt ut labore et dolore magna
+                <div class = "col-md-6" style = "background-color: #B18904;
+                box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                <p>sed do eiusmod tempor incididunt ut labore et dolore magna
                   aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                   ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            </div>
+              </div>
 
-         </div>
+          </div>
 
          <div class = "row">
 
@@ -70,34 +64,10 @@
           This is my DIV element.
           <p>Jakapong Klainongsuang</p>
         </div>
-        <!--
-        <form name="myForm" action="/action_page.php"
-          onsubmit="return validateForm()" method="post">
-          Name: <input type="text" name="fname">
-          <input type="submit" value="Submit">
-        </form>
-        <form>
-          <select id="mySelect" onchange="myFunction()">
-            <option>Apple</option>
-            <option>Orange</option>
-            <option>Pineapple</option>
-            <option>Banana</option>
-          </select>
-        </form>
 
-        </br>
-        <p id="demo"></p>
-
-
-        <select id="test-dropdown" onchange="choice1(this)">
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
-        !-->
         <form name="calform" method="get" action="" onsubmit="return false">
-          <table id="ipv4table" cellpadding="3" class="panel" >
-            <tr>
+          <table id="ipv4table" cellpadding="3" class="panel" align="center" style="height:100%">
+            <tr id="networl_class">
 	             <td>Network Class</td>
 	              <!--<td><label><input type="radio" value="any" checked onclick="popSubnet('a');" />Any</label> &nbsp; <label for="cclass1"><input type="radio" value="a"  onclick="popSubnet('a');" />A</label> &nbsp; <label for="cclass2"><input type="radio"  value="b" onclick="popSubnet('b');" />B</label> &nbsp; <label for="cclass3"><input type="radio"  value="c"  onclick="popSubnet('c');" />C</label></td>
                 !-->
@@ -165,7 +135,7 @@
                  </tr>
                  <tr>
 	                  <td>IP Address</td>
-	                   <td><input type="text" name="cip" id="cip" value="158.108.235.170" class="inlonger"></td>
+	                   <td><input type="text" name="cip" id="cip"  class="inlonger" placeholder="158.108.235.170"></td>
                    </tr>
                    <tr>
 	                    <td>&nbsp;</td>
