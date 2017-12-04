@@ -5,9 +5,11 @@
 </head>
 
 <body>
-  <input type="button" onclick="sayHello()" value="Say Hello" />
+  <!-- <input type="button" onclick="sayHello()" value="Say Hello" />
+  !-->
   <div class = "container">
-      <h1>Hello, world!</h1>
+      <h1>IP Subnet Calculator</h1>
+      <!--
       <div class = "row">
           <div class = "col-md-3" style = "background-color: #dedef8;
             box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
@@ -57,13 +59,16 @@
       </div>
 
    </div>
-
+   !-->
+   
+   <!--
    <button type="button"
         onclick="showdate()"> Click me to display Date and Time.</button>
         <div id="myDIV" style="display: none">
           This is my DIV element.
           <p>Jakapong Klainongsuang</p>
         </div>
+        !-->
 
         <form name="calform" method="get" action="" onsubmit="return false">
           <table id="ipv4table" cellpadding="3" class="panel" align="center" style="height:100%">
@@ -139,7 +144,7 @@
                    </tr>
                    <tr>
 	                    <td>&nbsp;</td>
-                     <td> <input type="submit" name="submit" value="submit" onclick="check_result()"></td>
+                     <td> <input type="submit" name="calculate" value="calculate" onclick="check_result()"></td>
 
                     <!--
                     <td><button type="button" onclick="formAction()">submit</button> </td>
@@ -147,14 +152,18 @@
                     </table>
             </form>
 
-            <div id = "show_result">
+            <div id = "show_result_head">
             </div>
-            <div id = "show_table">
+            <div id = "show_result" class = "show_result">
+            </div>
+            <div id = "show_table_head">
+            </div>
+            <div id = "show_table" class = "show_table">
             </div>
 
         </div>
 
-
+ <footer>By Jakapong Klainongsuang : 5810502245</footer>
 </body>
 </html>
 
@@ -192,6 +201,7 @@
     var Hex_ID = find_HEX_ID(Int_ID);
     var usable_length = find_all_possible(ip, subnet_pure, subnet, CIDR_Notation, network_address);
     var ip_class = find_type(subnet);
+    /*
     document.getElementById("show_result").innerHTML = "Result"
                                                         +"</br>" + "IP Address: "+ip
                                                         +"</br>" + "Network Address: " + network_address
@@ -209,6 +219,27 @@
                                                         +"</br>" + "Binary ID: " + Binary_ID
                                                         +"</br>" + "Integer ID: " + Int_ID
                                                         +"</br>" + "HEX ID: " + Hex_ID;
+    */
+    document.getElementById("show_result_head").innerHTML = "<h1>IPv4 Subnet Calculator</h1>";
+    document.getElementById("show_result").innerHTML = "<table style=\"width:100%\">"
+                                                        + "<tr><td>IP Address: </td><td>"+ip+"</td> </tr>"
+                                                        + "<tr><td>Network Address: </td><td>"+network_address+"</td> </tr>"
+                                                        + "<tr><td>Usable Host IP Range: </td><td>"+usable_length[1]+"</td> </tr>"
+                                                        + "<tr><td>Broadcast Address: </td><td>"+usable_length[2]+"</td> </tr>"
+                                                        + "<tr><td>Total Number of Hosts: </td><td>"+host+"</td> </tr>"
+                                                        + "<tr><td>Number of Usable Hosts: </td><td>"+usable_host+"</td> </tr>"
+                                                        + "<tr><td>Subnet Mask: </td><td>"+subnet_pure+"</td> </tr>"
+                                                        + "<tr><td>Wildcard_Mask: </td><td>"+Wildcard_Mask+"</td> </tr>"
+                                                        + "<tr><td>Binary Subnet Mask:</td><td>"+ip+"</td> </tr>"
+                                                        + "<tr><td>IP Class: </td><td>"+binary_subnet_mask+"</td> </tr>"
+                                                        + "<tr><td>CIDR_Notation: </td><td>"+ip_class+"</td> </tr>"
+                                                        + "<tr><td>IP Type: </td><td>"+CIDR_Notation+"</td> </tr>"
+                                                        + "<tr><td>Short:</td><td>"+ip_type+"</td> </tr>"
+                                                        + "<tr><td>Binary ID: </td><td>"+ip + " "+CIDR_Notation+"</td> </tr>"
+                                                        + "<tr><td>Integer ID: </td><td>"+Binary_ID+"</td> </tr>"
+                                                        + "<tr><td>HEX ID: </td><td>"+Hex_ID+"</td> </tr>"
+                                                        + "</table>";
+
     //alert("I am an alert box!"+ a);
   }
   function find_all_possible(ip, subnet_pure, subnet, CIDR_Notation, network_address_template) {
@@ -226,21 +257,26 @@
         var subnet_1 = int_to_binary(parseInt(arr[0]));
         var increment =(subnet_1.match(/0/g) || []).length;
         increment = Math.pow(2,increment);
-        alert(increment);
+        //alert(increment);
         var table_arr = new Array();
-        var text = "";
+        var text = "<table style=\"width:100%\">" + "<tr><th>Network Address</th><th>Usable Host Range</th> <th>Broadcast Address</th></tr>";
         while (ip_1 < 255) {
           network_address = ip_1+"."+ip_2+"."+ip_3+"."+ip_4;
           broadcast_address = (ip_1+increment-1)+"." + 255 + "."+ 255 +"."+255;
           usable = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+1) + " - " + (ip_1+increment-1)+"." + 255 + "."+ 255 +"."+254;
-          text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          //text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          text += "<tr><td>" +network_address+"</td><td>"+ usable+"</td> <td>" +broadcast_address +"</td></tr>"
           table_arr.push([network_address, usable, broadcast_address]);
           if (network_address == network_address_template) {
             ans = [network_address, usable, broadcast_address]
           }
           ip_1 = ip_1 + increment;
         }
-        document.getElementById("show_table").innerHTML = "All Possible " +CIDR_Notation+ " Networks"+"</br>"+ text;
+        if (table_arr.length > 1) {
+          text += "</table>";
+          document.getElementById("show_table_head").innerHTML = "<h1>"+"All Possible " +CIDR_Notation+ " Networks for "+ip_1+ "."+ip_2+ "."+ip_3+".*"+"</h1>";
+          document.getElementById("show_table").innerHTML = text ;
+        }
         //alert("eiei");
         return ans;
       }
@@ -256,14 +292,15 @@
         var subnet_2 = int_to_binary(parseInt(arr[1]));
         var increment =(subnet_2.match(/0/g) || []).length;
         increment = Math.pow(2,increment);
-        alert(increment);
+        //alert(increment);
         var table_arr = new Array();
-        var text = "";
+        var text = "<table style=\"width:100%\">" + "<tr><th>Network Address</th><th>Usable Host Range</th> <th>Broadcast Address</th></tr>";
         while (ip_2 < 255) {
           network_address = ip_1+"."+ip_2+"."+ip_3+"."+ip_4;
           broadcast_address = ip_1+"."+(ip_2+increment-1)+"."+ 255 +"."+255;
           usable = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+1) + " - " + ip_1+"."+(ip_2+increment-1)+"."+ 255 +"."+254;
-          text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          //text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          text += "<tr><td>" +network_address+"</td><td>"+ usable+"</td> <td>" +broadcast_address +"</td></tr>"
           table_arr.push([network_address, usable, broadcast_address]);
           if (network_address == network_address_template) {
             ans = [network_address, usable, broadcast_address]
@@ -271,7 +308,11 @@
           ip_2 = ip_2 + increment;
         }
 
-        document.getElementById("show_table").innerHTML = "All Possible " +CIDR_Notation+ " Networks for "+ip_1+ ".*" +".*"+".*" +"</br>"+ text;
+        if (table_arr.length > 1) {
+          text += "</table>";
+          document.getElementById("show_table_head").innerHTML = "<h1>"+"All Possible " +CIDR_Notation+ " Networks for "+ip_1+ "."+ip_2+ "."+ip_3+".*"+ "</h1>";
+          document.getElementById("show_table").innerHTML = text ;
+        }
         return ans;
       }
       else if (type_subnet === "B") {
@@ -286,14 +327,15 @@
         var subnet_3 = int_to_binary(parseInt(arr[2]));
         var increment =(subnet_3.match(/0/g) || []).length;
         increment = Math.pow(2,increment);
-        alert(increment);
+        //alert(increment);
         var table_arr = new Array();
-        var text = "";
+        var text = "<table style=\"width:100%\">" + "<tr><th>Network Address</th><th>Usable Host Range</th> <th>Broadcast Address</th></tr>";
         while (ip_3 < 255) {
           network_address = ip_1+"."+ip_2+"."+ip_3+"."+ip_4;
           broadcast_address = ip_1+"."+ip_2+"."+(ip_3+increment-1)+"."+255;
           usable = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+1) + " - " + ip_1+"."+ip_2+"."+(ip_3+increment-1)+"."+254;
-          text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          //text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          text += "<tr><td>" +network_address+"</td><td>"+ usable+"</td> <td>" +broadcast_address +"</td></tr>"
           table_arr.push([network_address, usable, broadcast_address]);
           if (network_address == network_address_template) {
             ans = [network_address, usable, broadcast_address]
@@ -301,7 +343,11 @@
           ip_3 = ip_3 + increment;
         }
 
-        document.getElementById("show_table").innerHTML = "All Possible " +CIDR_Notation+ " Networks for "+ip_1+ "."+ip_2 +".*"+".*" +"</br>"+ text ;
+        if (table_arr.length > 1) {
+          text += "</table>";
+          document.getElementById("show_table_head").innerHTML = "<h1>"+"All Possible " +CIDR_Notation+ " Networks for "+ip_1+ "."+ip_2+ "."+ip_3+".*" + "</h1>";
+          document.getElementById("show_table").innerHTML = text ;
+        }
         return ans;
       }
       else if (type_subnet === "C") {
@@ -316,14 +362,15 @@
         var subnet_4 = int_to_binary(parseInt(arr[3]));
         var increment =(subnet_4.match(/0/g) || []).length;
         increment = Math.pow(2,increment);
-        alert(increment);
+        //alert(increment);
         var table_arr = new Array();
-        var text = "";
+        var text = "<table style=\"width:100%\">" + "<tr><th>Network Address</th><th>Usable Host Range</th> <th>Broadcast Address</th></tr>";
         while (ip_4 < 255) {
           network_address = ip_1+"."+ip_2+"."+ip_3+"."+ip_4;
           broadcast_address = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+increment-1);
           usable = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+1) + " - " + ip_1+"."+ip_2+"."+ ip_3+"."+(ip_4+increment-2);
-          text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          //text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          text += "<tr><td>" +network_address+"</td><td>"+ usable+"</td> <td>" +broadcast_address +"</td></tr>"
           table_arr.push([network_address, usable, broadcast_address]);
           if (network_address == network_address_template) {
             ans = [network_address, usable, broadcast_address]
@@ -331,7 +378,21 @@
           ip_4 = ip_4 + increment;
         }
 
-        document.getElementById("show_table").innerHTML = "All Possible " +CIDR_Notation+ " Networks for "+ip_1+ "."+ip_2+ "."+ip_3+".*"+"</br>"+ text ;
+        var check_32  = parseInt(CIDR_Notation.substring(1));
+
+        if (check_32 === 32) {
+          text = "";
+            var ip_4 = parseInt(arr_ip[3]);
+            table_arr = []
+          network_address = ip_1+"."+ip_2+"."+ip_3+"."+ip_4;
+          ans = ["NA", "NA", network_address];
+        }
+        //alert(table_arr.length);
+        if (table_arr.length > 1) {
+          text += "</table>";
+          document.getElementById("show_table_head").innerHTML = "<h1>"+"All Possible " +CIDR_Notation+ " Networks for "+ip_1+ "."+ip_2+ "."+ip_3+".*" + "</h1>";
+          document.getElementById("show_table").innerHTML = text ;
+        }
         return ans;
       }
   }

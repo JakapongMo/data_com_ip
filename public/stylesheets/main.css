@@ -72,3 +72,54 @@ table {
 td {
     padding: 10px 10px 10px 10px;
 }
+
+.show_table table   {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+.show_table td   {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+.show_table th   {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.show_table tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+
+.show_result table{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.show_result  th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.show_result  td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.show_result th{
+    padding: 5px;
+    text-align: left;
+}
+.show_result td {
+    padding: 5px;
+    text-align: left;
+}
+footer {
+  position:fixed;
+  background-color: #3f3f3f;
+  color: white;
+  padding: 10px;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+}
