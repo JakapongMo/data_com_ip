@@ -135,7 +135,7 @@
                  </tr>
                  <tr>
 	                  <td>IP Address</td>
-	                   <td><input type="text" name="cip" id="cip"  class="inlonger" placeholder="158.108.235.170"></td>
+	                   <td><input type="text" name="cip" id="cip"  class="inlonger" placeholder="158.108.235.170"  pattern="(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"></td>
                    </tr>
                    <tr>
 	                    <td>&nbsp;</td>
@@ -175,14 +175,80 @@
     var binary_subnet_mask = cal_binary_subnet_mask(subnet_pure);
     var host = cal_nb_host(subnet_pure);
     var usable_host = cal_usable_host(host);
-    document.getElementById("show_result").innerHTML = "subnet : "+subnet
+    //find_type(subnet)
+    var Wildcard_Mask = find_Wildcard_Mask(subnet_pure);
+    var ip_type = find_ip_type(ip)
+    var CIDR_Notation = find_CIDR_Notation(subnet);
+    document.getElementById("show_result").innerHTML = "Result"
                                                         +"</br>"  + "IP Address : "+ip
                                                         +"</br>" + "Network Address : " + networl_address
                                                         +"</br>" + "Subnet Mask:" + subnet_pure
                                                         +"</br>" + "Binary Subnet Mask:	 " + binary_subnet_mask
                                                         +"</br>" + "Total Number of Hosts: " + host
-                                                        +"</br>" + "Number of Usable Hosts: " + usable_host;
+                                                        +"</br>" + "Number of Usable Hosts: " + usable_host
+                                                        +"</br>" + "CIDR_Notation: " + CIDR_Notation
+                                                        +"</br>" + "Short: " + ip + " "+CIDR_Notation
+                                                        +"</br>" + "IP Type: " + ip_type
+                                                        +"</br>" + "Wildcard_Mask: " + Wildcard_Mask;
     //alert("I am an alert box!"+ a);
+  }
+  function find_Wildcard_Mask(subnet_pure) {
+    var arr = new Array();
+    arr = subnet_pure.split(".");
+    var subnet_1 = parseInt(arr[0]);
+    var subnet_2 = parseInt(arr[1]);
+    var subnet_3 = parseInt(arr[2]);
+    var subnet_4 = parseInt(arr[3]);
+    var result_1 = 255 - subnet_1;
+    var result_2 = 255 - subnet_2;
+    var result_3 = 255 - subnet_3;
+    var result_4 = 255 - subnet_4;
+    var result = result_1 + "." + result_2 + "." + result_3 + "." + result_4;
+    return result;
+  }
+  function find_ip_type(ip) {
+    var arr_ip = new Array();
+    arr_ip = ip.split(".");
+    var ip_1 = parseInt(arr_ip[0]);
+    var ip_2 = parseInt(arr_ip[1]);
+    var ip_3 = parseInt(arr_ip[2]);
+    var ip_4 = parseInt(arr_ip[3]);
+    if (ip == "10.0.0.0") {
+      return "private";
+    }
+    if (ip_1 === 172 && ip_3 === 0 && ip_4 === 0 && (ip_2>=16 && ip_2 <= 31)) {
+      return "private";
+    }
+    if (ip_1 === 192 && ip_2 === 168 && ip_4 === 0 && (ip_2>=0 && ip_2 <= 255)) {
+      return "private";
+    }
+    return "pucblic";
+
+
+  }
+  function find_CIDR_Notation(subnet) {
+    var type = subnet.split('/')[1];
+    type = "/"+type;
+    return type;
+  }
+  function find_type(subnet) {
+  var type = subnet.split('/')[1];
+  type = parseInt(type);
+  var result = "";
+  if (type <= 7) {
+    result = "NA"
+  }
+  else if (type <= 15 ) {
+    result = "A"
+  }
+  else if (type <= 23 ) {
+    result = "B"
+  }
+  else if (type <= 32 ) {
+    result = "C"
+  }
+  return result;
+  //alert(result);
   }
   function cal_usable_host(host){
     if (host === 1) {
