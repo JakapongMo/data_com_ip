@@ -149,6 +149,8 @@
 
             <div id = "show_result">
             </div>
+            <div id = "show_table">
+            </div>
 
         </div>
 
@@ -160,7 +162,13 @@
 <script type="text/javascript">
   function check_result() {
     var ip = document.getElementById("cip").value;
-    if (ip.length === 0) {
+    var arr_ip = new Array();
+    arr_ip = ip.split(".");
+    var ip_1 = parseInt(arr_ip[0]);
+    var ip_2 = parseInt(arr_ip[1]);
+    var ip_3 = parseInt(arr_ip[2]);
+    var ip_4 = parseInt(arr_ip[3]);
+    if (ip.length === 0 || (ip_1<0 ||ip_1>255) || (ip_2<0 ||ip_2>255) || (ip_3<0 ||ip_3>255) || (ip_4<0 ||ip_4>255) ) {
       alert("please insert valid ip")
     }
     else {
@@ -171,7 +179,7 @@
     var subnet = document.getElementById("subnet").value;
     var ip = document.getElementById("cip").value;
     var subnet_pure = subnet.substring(0, subnet.indexOf('/'));
-    var networl_address = cal_network_address(subnet_pure,ip)
+    var network_address = cal_network_address(subnet_pure,ip)
     var binary_subnet_mask = cal_binary_subnet_mask(subnet_pure);
     var host = cal_nb_host(subnet_pure);
     var usable_host = cal_usable_host(host);
@@ -182,21 +190,150 @@
     var Binary_ID = find_Binary_ID(ip);
     var Int_ID = find_Int_ID(ip);
     var Hex_ID = find_HEX_ID(Int_ID);
+    var usable_length = find_all_possible(ip, subnet_pure, subnet, CIDR_Notation, network_address);
+    var ip_class = find_type(subnet);
     document.getElementById("show_result").innerHTML = "Result"
-                                                        +"</br>"  + "IP Address : "+ip
-                                                        +"</br>" + "Network Address : " + networl_address
-                                                        +"</br>" + "Subnet Mask:" + subnet_pure
-                                                        +"</br>" + "Binary Subnet Mask:	 " + binary_subnet_mask
+                                                        +"</br>" + "IP Address: "+ip
+                                                        +"</br>" + "Network Address: " + network_address
+                                                        +"</br>" + "Usable Host IP Range: " + usable_length[1]
+                                                        +"</br>" + "Broadcast Address: " + usable_length[2]
                                                         +"</br>" + "Total Number of Hosts: " + host
                                                         +"</br>" + "Number of Usable Hosts: " + usable_host
-                                                        +"</br>" + "CIDR_Notation: " + CIDR_Notation
-                                                        +"</br>" + "Short: " + ip + " "+CIDR_Notation
-                                                        +"</br>" + "IP Type: " + ip_type
+                                                        +"</br>" + "Subnet Mask:" + subnet_pure
                                                         +"</br>" + "Wildcard_Mask: " + Wildcard_Mask
-                                                        +"</br>" + "Binary_ID: " + Binary_ID
-                                                        +"</br>" + "Integer_ID: " + Int_ID
-                                                        +"</br>" + "HEX_ID: " + Hex_ID;
+                                                        +"</br>" + "Binary Subnet Mask:	 " + binary_subnet_mask
+                                                        +"</br>" + "IP Class: " + ip_class
+                                                        +"</br>" + "CIDR_Notation: " + CIDR_Notation
+                                                        +"</br>" + "IP Type: " + ip_type
+                                                        +"</br>" + "Short: " + ip + " "+CIDR_Notation
+                                                        +"</br>" + "Binary ID: " + Binary_ID
+                                                        +"</br>" + "Integer ID: " + Int_ID
+                                                        +"</br>" + "HEX ID: " + Hex_ID;
     //alert("I am an alert box!"+ a);
+  }
+  function find_all_possible(ip, subnet_pure, subnet, CIDR_Notation, network_address_template) {
+      var type_subnet = find_type(subnet);
+      //alert(type_subnet);
+      if (type_subnet === "NA") {
+        var arr_ip = new Array();
+        arr_ip = ip.split(".");
+        var ip_1 = 0;
+        var ip_2 = 0;
+        var ip_3 = 0;
+        var ip_4 = 0;
+        var arr = new Array();
+        arr = subnet_pure.split(".");
+        var subnet_1 = int_to_binary(parseInt(arr[0]));
+        var increment =(subnet_1.match(/0/g) || []).length;
+        increment = Math.pow(2,increment);
+        alert(increment);
+        var table_arr = new Array();
+        var text = "";
+        while (ip_1 < 255) {
+          network_address = ip_1+"."+ip_2+"."+ip_3+"."+ip_4;
+          broadcast_address = (ip_1+increment-1)+"." + 255 + "."+ 255 +"."+255;
+          usable = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+1) + " - " + (ip_1+increment-1)+"." + 255 + "."+ 255 +"."+254;
+          text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          table_arr.push([network_address, usable, broadcast_address]);
+          if (network_address == network_address_template) {
+            ans = [network_address, usable, broadcast_address]
+          }
+          ip_1 = ip_1 + increment;
+        }
+        document.getElementById("show_table").innerHTML = "All Possible " +CIDR_Notation+ " Networks"+"</br>"+ text;
+        //alert("eiei");
+        return ans;
+      }
+      else if (type_subnet === "A") {
+        var arr_ip = new Array();
+        arr_ip = ip.split(".");
+        var ip_1 = parseInt(arr_ip[0]);
+        var ip_2 = 0;
+        var ip_3 = 0;
+        var ip_4 = 0;
+        var arr = new Array();
+        arr = subnet_pure.split(".");
+        var subnet_2 = int_to_binary(parseInt(arr[1]));
+        var increment =(subnet_2.match(/0/g) || []).length;
+        increment = Math.pow(2,increment);
+        alert(increment);
+        var table_arr = new Array();
+        var text = "";
+        while (ip_2 < 255) {
+          network_address = ip_1+"."+ip_2+"."+ip_3+"."+ip_4;
+          broadcast_address = ip_1+"."+(ip_2+increment-1)+"."+ 255 +"."+255;
+          usable = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+1) + " - " + ip_1+"."+(ip_2+increment-1)+"."+ 255 +"."+254;
+          text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          table_arr.push([network_address, usable, broadcast_address]);
+          if (network_address == network_address_template) {
+            ans = [network_address, usable, broadcast_address]
+          }
+          ip_2 = ip_2 + increment;
+        }
+
+        document.getElementById("show_table").innerHTML = "All Possible " +CIDR_Notation+ " Networks for "+ip_1+ ".*" +".*"+".*" +"</br>"+ text;
+        return ans;
+      }
+      else if (type_subnet === "B") {
+        var arr_ip = new Array();
+        arr_ip = ip.split(".");
+        var ip_1 = parseInt(arr_ip[0]);
+        var ip_2 = parseInt(arr_ip[1]);
+        var ip_3 = 0;
+        var ip_4 = 0;
+        var arr = new Array();
+        arr = subnet_pure.split(".");
+        var subnet_3 = int_to_binary(parseInt(arr[2]));
+        var increment =(subnet_3.match(/0/g) || []).length;
+        increment = Math.pow(2,increment);
+        alert(increment);
+        var table_arr = new Array();
+        var text = "";
+        while (ip_3 < 255) {
+          network_address = ip_1+"."+ip_2+"."+ip_3+"."+ip_4;
+          broadcast_address = ip_1+"."+ip_2+"."+(ip_3+increment-1)+"."+255;
+          usable = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+1) + " - " + ip_1+"."+ip_2+"."+(ip_3+increment-1)+"."+254;
+          text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          table_arr.push([network_address, usable, broadcast_address]);
+          if (network_address == network_address_template) {
+            ans = [network_address, usable, broadcast_address]
+          }
+          ip_3 = ip_3 + increment;
+        }
+
+        document.getElementById("show_table").innerHTML = "All Possible " +CIDR_Notation+ " Networks for "+ip_1+ "."+ip_2 +".*"+".*" +"</br>"+ text ;
+        return ans;
+      }
+      else if (type_subnet === "C") {
+        var arr_ip = new Array();
+        arr_ip = ip.split(".");
+        var ip_1 = parseInt(arr_ip[0]);
+        var ip_2 = parseInt(arr_ip[1]);
+        var ip_3 = parseInt(arr_ip[2]);
+        var ip_4 = 0;
+        var arr = new Array();
+        arr = subnet_pure.split(".");
+        var subnet_4 = int_to_binary(parseInt(arr[3]));
+        var increment =(subnet_4.match(/0/g) || []).length;
+        increment = Math.pow(2,increment);
+        alert(increment);
+        var table_arr = new Array();
+        var text = "";
+        while (ip_4 < 255) {
+          network_address = ip_1+"."+ip_2+"."+ip_3+"."+ip_4;
+          broadcast_address = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+increment-1);
+          usable = ip_1+"."+ip_2+"."+ip_3+"."+(ip_4+1) + " - " + ip_1+"."+ip_2+"."+ ip_3+"."+(ip_4+increment-2);
+          text = text + network_address + "  :  " + usable +"  :  "+ broadcast_address +"</br>"
+          table_arr.push([network_address, usable, broadcast_address]);
+          if (network_address == network_address_template) {
+            ans = [network_address, usable, broadcast_address]
+          }
+          ip_4 = ip_4 + increment;
+        }
+
+        document.getElementById("show_table").innerHTML = "All Possible " +CIDR_Notation+ " Networks for "+ip_1+ "."+ip_2+ "."+ip_3+".*"+"</br>"+ text ;
+        return ans;
+      }
   }
   function find_HEX_ID(Int_ID){
     var hexStr = Int_ID.toString(16);
@@ -291,11 +428,15 @@
   function cal_nb_host(subnet_pure){
     var arr = new Array();
     arr = subnet_pure.split(".");
+    var subnet_1 = int_to_binary(parseInt(arr[0]));
+    var subnet_2 = int_to_binary(parseInt(arr[1]));
     var subnet_3 = int_to_binary(parseInt(arr[2]));
     var subnet_4 = int_to_binary(parseInt(arr[3]));
-    var count = (subnet_3.match(/0/g) || []).length;
-    var count2 = (subnet_4.match(/0/g) || []).length;
-    var count = count + count2;
+    var count1 = (subnet_1.match(/0/g) || []).length;
+    var count2 = (subnet_2.match(/0/g) || []).length;
+    var count3 = (subnet_3.match(/0/g) || []).length;
+    var count4 = (subnet_4.match(/0/g) || []).length;
+    var count = count1 + count2 + count3 + count4;
     var result = Math.pow(2, count);
 
     return result
