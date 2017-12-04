@@ -179,6 +179,9 @@
     var Wildcard_Mask = find_Wildcard_Mask(subnet_pure);
     var ip_type = find_ip_type(ip)
     var CIDR_Notation = find_CIDR_Notation(subnet);
+    var Binary_ID = find_Binary_ID(ip);
+    var Int_ID = find_Int_ID(ip);
+    var Hex_ID = find_HEX_ID(Int_ID);
     document.getElementById("show_result").innerHTML = "Result"
                                                         +"</br>"  + "IP Address : "+ip
                                                         +"</br>" + "Network Address : " + networl_address
@@ -189,8 +192,37 @@
                                                         +"</br>" + "CIDR_Notation: " + CIDR_Notation
                                                         +"</br>" + "Short: " + ip + " "+CIDR_Notation
                                                         +"</br>" + "IP Type: " + ip_type
-                                                        +"</br>" + "Wildcard_Mask: " + Wildcard_Mask;
+                                                        +"</br>" + "Wildcard_Mask: " + Wildcard_Mask
+                                                        +"</br>" + "Binary_ID: " + Binary_ID
+                                                        +"</br>" + "Integer_ID: " + Int_ID
+                                                        +"</br>" + "HEX_ID: " + Hex_ID;
     //alert("I am an alert box!"+ a);
+  }
+  function find_HEX_ID(Int_ID){
+    var hexStr = Int_ID.toString(16);
+    hexStr = "0x" + hexStr;
+    return hexStr;
+  }
+  function find_Int_ID(ip){
+    var arr_ip = new Array();
+    arr_ip = ip.split(".");
+    var ip_1 = int_to_binary(parseInt(arr_ip[0]));
+    var ip_2 = int_to_binary(parseInt(arr_ip[1]));
+    var ip_3 = int_to_binary(parseInt(arr_ip[2]));
+    var ip_4 = int_to_binary(parseInt(arr_ip[3]));
+    var result = ip_1 + ip_2 + ip_3 + ip_4;
+    result = parseInt(result,2);
+    return result;
+  }
+  function find_Binary_ID(ip){
+    var arr_ip = new Array();
+    arr_ip = ip.split(".");
+    var ip_1 = int_to_binary(parseInt(arr_ip[0]));
+    var ip_2 = int_to_binary(parseInt(arr_ip[1]));
+    var ip_3 = int_to_binary(parseInt(arr_ip[2]));
+    var ip_4 = int_to_binary(parseInt(arr_ip[3]));
+    var result = ip_1 + ip_2 + ip_3 + ip_4;
+    return result;
   }
   function find_Wildcard_Mask(subnet_pure) {
     var arr = new Array();
@@ -214,15 +246,15 @@
     var ip_3 = parseInt(arr_ip[2]);
     var ip_4 = parseInt(arr_ip[3]);
     if (ip == "10.0.0.0") {
-      return "private";
+      return "Private";
     }
     if (ip_1 === 172 && ip_3 === 0 && ip_4 === 0 && (ip_2>=16 && ip_2 <= 31)) {
-      return "private";
+      return "Private";
     }
     if (ip_1 === 192 && ip_2 === 168 && ip_4 === 0 && (ip_2>=0 && ip_2 <= 255)) {
-      return "private";
+      return "Private";
     }
-    return "pucblic";
+    return "Pucblic";
 
 
   }
@@ -307,6 +339,7 @@
 
     //alert("I am an alert box!"+ fields);
   }
+
   function int_to_binary(number) {
     var result = number.toString(2);
     while (Math.floor(result.length %8) != 0) {
